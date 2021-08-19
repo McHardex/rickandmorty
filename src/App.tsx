@@ -1,11 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
-import { Characters, Location, Episode, CharactersInfo } from "Interfaces";
-
-const url = "https://rickandmortyapi.com/api/character";
+import { useEffect, useState } from "react";
+import { Character, CharactersInfo } from "Interfaces";
+import getUpdatedCharacterDetails from "utils/getUpdatedCharacterDetails";
 
 const App = () => {
-  const [characters, setCharacters] = useState<Characters[]>([]);
+  const [characters, setCharacters] = useState<Character[]>([]);
   const [info, setInfo] = useState<CharactersInfo>({
     pages: 0,
     count: 0,
@@ -14,69 +12,29 @@ const App = () => {
   });
   const [page, setPage] = useState<number>(1);
 
-  const getLocation = async (locationUrl: string): Promise<Location[]> => {
-    const res = await axios.get(locationUrl);
-    return res.data;
-  };
-
-  const getChapters = async (episodeUrl: string): Promise<Episode[]> => {
-    const res = await axios.get(episodeUrl);
-    return res.data;
-  };
-
-  const getCharactersLocationAndEpisodes =
-    useCallback(async (): Promise<void> => {
-      const res = await axios.get(`${url}/?page=${page}`);
-      const characters = res.data.results;
-
-      const charactersWithLocationAndEpisodeDetails: Characters[] =
-        characters.map(async (character: Characters) => {
-          // get location details
-          const locationDetails = await getLocation(character.location.url);
-
-          // get episode details
-          const episodesPromises = character.episode.map(
-            async (episode) => await getChapters(episode)
-          );
-
-          const episodeDetails = await Promise.all([...episodesPromises]);
-
-          // update charaters
-          return {
-            ...character,
-            location: locationDetails,
-            episode: episodeDetails,
-          };
-        });
-
-      const result = await Promise.all(charactersWithLocationAndEpisodeDetails);
-
-      setInfo(res.data.info);
-      setCharacters(result);
-    }, [page]);
-
   useEffect(() => {
-    getCharactersLocationAndEpisodes();
-  }, [page, getCharactersLocationAndEpisodes]);
+    const getCharacterDetails = async () => {
+      const { info, characters } = await getUpdatedCharacterDetails(
+        `${process.env.REACT_APP_RICK_AND_MORTY_URL}/character/?page=${page}`
+      );
+
+      setInfo(info);
+      setCharacters(characters);
+    };
+    getCharacterDetails();
+  }, [page]);
 
   return (
     <div className="App">
+      <button disabled={info.prev === null} onClick={() => setPage(page - 1)}>
+        Prev Page
+      </button>
+      <button disabled={info.next === null} onClick={() => setPage(page + 1)}>
+        Next Page
+      </button>
       {characters.length > 0 && (
         <>
-          <div>
-            <button
-              disabled={info.prev === null}
-              onClick={() => setPage(page - 1)}
-            >
-              Prev Page
-            </button>
-            <button
-              disabled={info.next === null}
-              onClick={() => setPage(page + 1)}
-            >
-              Next Page
-            </button>
-          </div>
+          <div></div>
           <h1>Page: {page}</h1>
           <pre>{JSON.stringify(info, null, 4)}</pre>
           <pre>{JSON.stringify(characters, null, 4)}</pre>

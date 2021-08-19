@@ -5,7 +5,7 @@ export interface CharactersInfo {
   prev: string | null;
 }
 
-export interface Characters {
+export interface Character {
   id: number;
   name: string;
   status: string;
