@@ -13,18 +13,20 @@ import {
 import LocationDetails from "Components/LocationDetails";
 import ChaptersFeatured from "Components/ChaptersFeatured";
 import CharacterDetails from "Components/Character";
+import Loader from "Components/Loader";
+import AppTopBar from "Components/AppTopBar";
+import RMPagination from "Components/RMPagination";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    width: "80%",
+    width: "85%",
     margin: "0 auto",
   },
   cardContent: {
     background: "#3b3e43",
   },
   root: {
-    width: 300,
-    margin: "0 auto",
+    minWidth: 300,
   },
   media: {
     height: 0,
@@ -43,26 +45,49 @@ const App = () => {
     next: null,
   });
   const [page, setPage] = useState<number>(1);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    setIsLoading(true);
     const getCharacterDetails = async (): Promise<void> => {
-      const { info, characters } = await getUpdatedCharacterDetails(
-        `${process.env.REACT_APP_RICK_AND_MORTY_URL}/character/?page=${page}`
-      );
+      try {
+        const { info, characters } = await getUpdatedCharacterDetails(
+          `${process.env.REACT_APP_RICK_AND_MORTY_URL}/character/?page=${page}`
+        );
 
-      setInfo(info);
-      setCharacters(characters);
+        setInfo(info);
+        setCharacters(characters);
+        setIsLoading(false);
+      } catch (error) {
+        throw new Error(error);
+      }
     };
     getCharacterDetails();
   }, [page]);
 
+  const handlePageChange = (event: Object, page: number): void => {
+    setPage(page);
+  };
+
   return (
-    <div>
+    <div className="App">
+      <AppTopBar />
+      <Loader isLoading={isLoading} message="The Rick And Morty Show" />
+      {!isLoading && (
+        <RMPagination
+          color="secondary"
+          count={info.pages}
+          hideNextButton={!!info.next}
+          hidePrevButton={!!info.prev}
+          page={page}
+          onChange={handlePageChange}
+        />
+      )}
       <Grid container spacing={6} className={classes.gridContainer}>
         {characters.length > 0 &&
           characters.map((character) => (
-            <Grid item xs key={character.id}>
-              <Card className={classes.root} key={character.id}>
+            <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={character.id} className={classes.root}>
+              <Card key={character.id}>
                 <CardMedia
                   className={classes.media}
                   image={character.image}
@@ -79,6 +104,16 @@ const App = () => {
             </Grid>
           ))}
       </Grid>
+      {!isLoading && (
+        <RMPagination
+          color="secondary"
+          count={info.pages}
+          hideNextButton={!!info.next}
+          hidePrevButton={!!info.prev}
+          page={page}
+          onChange={handlePageChange}
+        />
+      )}
     </div>
   );
 };

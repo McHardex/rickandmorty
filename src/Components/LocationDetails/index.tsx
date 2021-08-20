@@ -87,7 +87,7 @@ const LocationDetails: React.FC<Props> = ({ location }: Props) => {
       {/* details */}
       <Collapse in={showLocationDetails} timeout="auto" unmountOnExit>
         <CardContent>
-          <ListItemWrapper primary="Name" secondary={location.name || "-"}>
+          <ListItemWrapper primary="Location" secondary={location.name || "-"}>
             <PermIdentityIcon className={classes.icon} />
           </ListItemWrapper>
 

@@ -6,6 +6,7 @@ import {
   ListItemText,
   Typography,
   Tooltip,
+  Grid,
   makeStyles,
 } from "@material-ui/core";
 
@@ -34,11 +35,32 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: "#fff",
   },
+  secondaryList: {
+    color: "#0000008a",
+    fontSize: "12px",
+  },
 }));
 
 interface Props {
   character: ModifiedCharacterDetail;
 }
+
+interface SecondaryListProps {
+  value: string;
+}
+
+const SecondaryList: React.FC<SecondaryListProps> = ({
+  value,
+}: SecondaryListProps) => {
+  const classes = useStyles();
+  return (
+    <Tooltip title={value} interactive>
+      <Typography noWrap className={classes.secondaryList}>
+        {value}
+      </Typography>
+    </Tooltip>
+  );
+};
 
 const CharacterDetails: React.FC<Props> = ({ character }: Props) => {
   const classes = useStyles();
@@ -53,35 +75,52 @@ const CharacterDetails: React.FC<Props> = ({ character }: Props) => {
         </Tooltip>
       </Box>
 
-      <Box display="flex" alignItems="center">
-        <ListItemWrapper
-          primary="Created"
-          secondary={formatDate(character.created)}
-          avatar
-        >
-          <CalendarTodayIcon className={classes.icon} />
-        </ListItemWrapper>
+      <Grid container spacing={1} alignItems="center">
+        <Grid item xs={6}>
+          <ListItemWrapper
+            primary="Created"
+            secondary={formatDate(character.created)}
+            avatar
+          >
+            <CalendarTodayIcon className={classes.icon} />
+          </ListItemWrapper>
+        </Grid>
+        <Grid item xs={6}>
+          <ListItemWrapper primary="Status" secondary={character.status} avatar>
+            <LocalHospitalIcon className={classes.icon} />
+          </ListItemWrapper>
+        </Grid>
+      </Grid>
 
-        <ListItemWrapper primary="Status" secondary={character.status} avatar>
-          <LocalHospitalIcon className={classes.icon} />
-        </ListItemWrapper>
-      </Box>
+      <Card>
+        <Grid container spacing={1}>
+          <Grid item xs={4}>
+            <ListItem>
+              <ListItemText
+                primary="Species"
+                secondary={<SecondaryList value={character.species} />}
+              />
+            </ListItem>
+          </Grid>
 
-      <Card className={classes.horizontalCard}>
-        <ListItem>
-          <ListItemText primary="Species" secondary={character.species} />
-        </ListItem>
-        <Tooltip title={character.origin.name} interactive>
-          <ListItem>
-            <ListItemText
-              primary="Origin"
-              secondary={`${character.origin.name.slice(0, 5)}...`}
-            />
-          </ListItem>
-        </Tooltip>
-        <ListItem>
-          <ListItemText primary="Gender" secondary={character.gender} />
-        </ListItem>
+          <Grid item xs={4}>
+            <ListItem>
+              <ListItemText
+                primary="Origin"
+                secondary={<SecondaryList value={character.origin.name} />}
+              />
+            </ListItem>
+          </Grid>
+
+          <Grid item xs={4}>
+            <ListItem>
+              <ListItemText
+                primary="Gender"
+                secondary={<SecondaryList value={character.gender} />}
+              />
+            </ListItem>
+          </Grid>
+        </Grid>
       </Card>
     </>
   );
