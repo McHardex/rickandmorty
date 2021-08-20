@@ -9,6 +9,7 @@ import {
   Grid,
   Box,
 } from "@material-ui/core";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 
 import LocationDetails from "Components/LocationDetails";
 import ChaptersFeatured from "Components/ChaptersFeatured";
@@ -17,6 +18,12 @@ import Loader from "Components/Loader";
 import AppTopBar from "Components/AppTopBar";
 import RMPagination from "Components/RMPagination";
 
+const theme = createTheme({
+  typography: {
+    fontFamily: ["monospace", "cursive"].join(","),
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
     width: "85%",
@@ -24,9 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
     background: "#3b3e43",
-  },
-  root: {
-    minWidth: 300,
   },
   media: {
     height: 0,
@@ -70,51 +74,53 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <AppTopBar />
-      <Loader isLoading={isLoading} message="The Rick And Morty Show" />
-      {!isLoading && (
-        <RMPagination
-          color="secondary"
-          count={info.pages}
-          hideNextButton={!!info.next}
-          hidePrevButton={!!info.prev}
-          page={page}
-          onChange={handlePageChange}
-        />
-      )}
-      <Grid container spacing={6} className={classes.gridContainer}>
-        {characters.length > 0 &&
-          characters.map((character) => (
-            <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={character.id} className={classes.root}>
-              <Card key={character.id}>
-                <CardMedia
-                  className={classes.media}
-                  image={character.image}
-                  title={character.name}
-                />
-                <CardContent className={classes.cardContent}>
-                  <CharacterDetails character={character} />
-                  <LocationDetails location={character.location} />
-                  <Box mt={1}>
-                    <ChaptersFeatured episode={character.episode} />
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-      </Grid>
-      {!isLoading && (
-        <RMPagination
-          color="secondary"
-          count={info.pages}
-          hideNextButton={!!info.next}
-          hidePrevButton={!!info.prev}
-          page={page}
-          onChange={handlePageChange}
-        />
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <AppTopBar />
+        <Loader isLoading={isLoading} message="The Rick And Morty Show" />
+        {!isLoading && (
+          <RMPagination
+            color="secondary"
+            count={info.pages}
+            hideNextButton={!!info.next}
+            hidePrevButton={!!info.prev}
+            page={page}
+            onChange={handlePageChange}
+          />
+        )}
+        <Grid container spacing={6} className={classes.gridContainer}>
+          {characters.length > 0 &&
+            characters.map((character) => (
+              <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={character.id}>
+                <Card key={character.id}>
+                  <CardMedia
+                    className={classes.media}
+                    image={character.image}
+                    title={character.name}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <CharacterDetails character={character} />
+                    <LocationDetails location={character.location} />
+                    <Box mt={1}>
+                      <ChaptersFeatured episode={character.episode} />
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+        </Grid>
+        {!isLoading && (
+          <RMPagination
+            color="secondary"
+            count={info.pages}
+            hideNextButton={!!info.next}
+            hidePrevButton={!!info.prev}
+            page={page}
+            onChange={handlePageChange}
+          />
+        )}
+      </div>
+    </ThemeProvider>
   );
 };
 
