@@ -20,7 +20,8 @@ import RMPagination from "Components/RMPagination";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["monospace", "cursive"].join(","),
+    fontFamily: ["roboto", "monospace"].join(","),
+    fontSize: 16,
   },
 });
 

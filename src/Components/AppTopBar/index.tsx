@@ -13,7 +13,11 @@ const AppTopBar = () => {
   return (
     <AppBar position="sticky" className={classes.appBar}>
       <Toolbar>
-        <Typography variant="h4">Rick And Morty</Typography>
+        <Typography variant="h5">Rick</Typography>
+        <Typography variant="h3" color="secondary">
+          &nbsp;And Mor
+        </Typography>
+        <Typography variant="h3">ty</Typography>
       </Toolbar>
     </AppBar>
   );
