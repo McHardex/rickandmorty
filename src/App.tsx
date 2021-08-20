@@ -7,6 +7,7 @@ import {
   CardContent,
   makeStyles,
   Grid,
+  Box,
 } from "@material-ui/core";
 
 import LocationDetails from "Components/LocationDetails";
@@ -15,11 +16,15 @@ import CharacterDetails from "Components/Character";
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    width: "90%",
+    width: "80%",
     margin: "0 auto",
   },
+  cardContent: {
+    background: "#3b3e43",
+  },
   root: {
-    width: "100%",
+    width: 300,
+    margin: "0 auto",
   },
   media: {
     height: 0,
@@ -53,20 +58,22 @@ const App = () => {
 
   return (
     <div>
-      <Grid container spacing={4} className={classes.gridContainer}>
+      <Grid container spacing={6} className={classes.gridContainer}>
         {characters.length > 0 &&
           characters.map((character) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={character.id}>
+            <Grid item xs key={character.id}>
               <Card className={classes.root} key={character.id}>
                 <CardMedia
                   className={classes.media}
                   image={character.image}
                   title={character.name}
                 />
-                <CardContent>
+                <CardContent className={classes.cardContent}>
                   <CharacterDetails character={character} />
                   <LocationDetails location={character.location} />
-                  <ChaptersFeatured episode={character.episode} />
+                  <Box mt={1}>
+                    <ChaptersFeatured episode={character.episode} />
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>

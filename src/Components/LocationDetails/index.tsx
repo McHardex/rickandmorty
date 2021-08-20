@@ -4,7 +4,6 @@ import clsx from "clsx";
 import {
   Card,
   CardContent,
-  Typography,
   makeStyles,
   ListItem,
   Box,
@@ -15,7 +14,7 @@ import {
 } from "@material-ui/core";
 
 import {
-  Folder as FolderIcon,
+  PermIdentity as PermIdentityIcon,
   ExpandMore as ExpandMoreIcon,
   PersonPinCircle as PersonPinCircleIcon,
   MergeType as MergeTypeIcon,
@@ -23,11 +22,12 @@ import {
   House as HouseIcon,
 } from "@material-ui/icons";
 import { Location } from "Interfaces";
+import ListItemWrapper from "Components/ListItemWrapper";
 
 const useStyles = makeStyles((theme) => ({
   horizontalCard: {
     display: "flex",
-    boxShadow: "0 3px 2px #eee",
+    boxShadow: "0px 6px 12px rgb(255 255 255 / 30%)",
     alignItems: "flex-start",
   },
   expand: {
@@ -39,6 +39,15 @@ const useStyles = makeStyles((theme) => ({
   },
   expandOpen: {
     transform: "rotate(180deg)",
+  },
+  listItemPrimary: {
+    color: "#9e9e9e",
+  },
+  listItemSecondary: {
+    color: "#fff",
+  },
+  icon: {
+    color: "#fff",
   },
 }));
 
@@ -78,34 +87,27 @@ const LocationDetails: React.FC<Props> = ({ location }: Props) => {
       {/* details */}
       <Collapse in={showLocationDetails} timeout="auto" unmountOnExit>
         <CardContent>
-          <ListItem>
-            <ListItemAvatar>
-              <FolderIcon />
-            </ListItemAvatar>
-            <ListItemText primary="Name" />
-            <Typography>{location.name}</Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <MergeTypeIcon />
-            </ListItemAvatar>
-            <ListItemText primary="Type" />
-            <Typography>{location.type}</Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <AspectRatioIcon />
-            </ListItemAvatar>
-            <ListItemText primary="Dimension" />
-            <Typography>{location.dimension}</Typography>
-          </ListItem>
-          <ListItem>
-            <ListItemAvatar>
-              <HouseIcon />
-            </ListItemAvatar>
-            <ListItemText primary="No of Residents" />
-            <Typography>{location?.residents?.length || 0}</Typography>
-          </ListItem>
+          <ListItemWrapper primary="Name" secondary={location.name || "-"}>
+            <PermIdentityIcon className={classes.icon} />
+          </ListItemWrapper>
+
+          <ListItemWrapper primary="Type" secondary={location.type || "-"}>
+            <MergeTypeIcon className={classes.icon} />
+          </ListItemWrapper>
+
+          <ListItemWrapper
+            primary="Dimension"
+            secondary={location.dimension || "-"}
+          >
+            <AspectRatioIcon className={classes.icon} />
+          </ListItemWrapper>
+
+          <ListItemWrapper
+            primary="No of Residents"
+            secondary={location?.residents?.length || 0}
+          >
+            <HouseIcon className={classes.icon} />
+          </ListItemWrapper>
         </CardContent>
       </Collapse>
     </Box>

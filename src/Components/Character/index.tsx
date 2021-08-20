@@ -3,10 +3,9 @@ import {
   Card,
   ListItem,
   Box,
-  ListItemAvatar,
   ListItemText,
-  Avatar,
   Typography,
+  Tooltip,
   makeStyles,
 } from "@material-ui/core";
 
@@ -15,16 +14,25 @@ import {
   CalendarToday as CalendarTodayIcon,
 } from "@material-ui/icons";
 import formatDate from "utils/formatDate";
+import ListItemWrapper from "Components/ListItemWrapper";
 
 const useStyles = makeStyles((theme) => ({
-  media: {
-    height: 0,
-    paddingTop: "56.25%",
+  header: {
+    color: "#fff",
+    fontSize: "24px",
+    fontWeight: "bold",
+    width: "100%",
   },
   horizontalCard: {
     display: "flex",
-    boxShadow: "0 3px 2px #eee",
+    boxShadow: "0px 6px 12px rgb(255 255 255 / 30%)",
     alignItems: "flex-start",
+  },
+  avatar: {
+    background: "#000",
+  },
+  icon: {
+    color: "#fff",
   },
 }));
 
@@ -37,39 +45,40 @@ const CharacterDetails: React.FC<Props> = ({ character }: Props) => {
 
   return (
     <>
+      <Box textAlign="center">
+        <Tooltip title={character.name} interactive>
+          <Typography color="secondary" noWrap className={classes.header}>
+            {character.name}
+          </Typography>
+        </Tooltip>
+      </Box>
+
       <Box display="flex" alignItems="center">
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <LocalHospitalIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Status" secondary={character.status} />
-        </ListItem>
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar>
-              <CalendarTodayIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText
-            primary="Created Date"
-            secondary={formatDate(character.created)}
-          />
-        </ListItem>
+        <ListItemWrapper
+          primary="Created"
+          secondary={formatDate(character.created)}
+          avatar
+        >
+          <CalendarTodayIcon className={classes.icon} />
+        </ListItemWrapper>
+
+        <ListItemWrapper primary="Status" secondary={character.status} avatar>
+          <LocalHospitalIcon className={classes.icon} />
+        </ListItemWrapper>
       </Box>
 
       <Card className={classes.horizontalCard}>
         <ListItem>
           <ListItemText primary="Species" secondary={character.species} />
         </ListItem>
-        <ListItem>
-          <ListItemText
-            primary="Origin"
-            title={character.origin.name}
-            secondary={`${character.origin.name.slice(0, 5)}...`}
-          />
-        </ListItem>
+        <Tooltip title={character.origin.name} interactive>
+          <ListItem>
+            <ListItemText
+              primary="Origin"
+              secondary={`${character.origin.name.slice(0, 5)}...`}
+            />
+          </ListItem>
+        </Tooltip>
         <ListItem>
           <ListItemText primary="Gender" secondary={character.gender} />
         </ListItem>
