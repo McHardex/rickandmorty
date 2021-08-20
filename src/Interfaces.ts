@@ -16,10 +16,7 @@ export interface Character {
     name: string;
     url: string;
   };
-  location: {
-    name: string;
-    url: string;
-  };
+  location: Location;
   image: string;
   episode: string[];
   url: string;
@@ -45,4 +42,8 @@ export interface Episode {
   characters: string[];
   url: string;
   created: string;
+}
+
+export interface ModifiedCharacterDetail extends Omit<Character, "episode"> {
+  episode: Episode[];
 }
