@@ -59,7 +59,11 @@ const ChaptersFeatured: React.FC<Props> = ({ episode }: Props) => {
       <Card className={classes.horizontalCard}>
         <ListItem>
           <ListItemAvatar>
-            <Badge badgeContent={episode.length} color="secondary">
+            <Badge
+              badgeContent={episode.length}
+              color="secondary"
+              data-testid="badge"
+            >
               <FeaturedPlayListIcon />
             </Badge>
           </ListItemAvatar>

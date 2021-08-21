@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
   },
   avatar: {
-    background: "#000",
+    background: "#fff",
   },
   icon: {
     color: "#fff",
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
   secondaryList: {
     color: "#0000008a",
     fontSize: "12px",
+    display: "block",
   },
 }));
 
@@ -55,7 +56,7 @@ const SecondaryList: React.FC<SecondaryListProps> = ({
   const classes = useStyles();
   return (
     <Tooltip title={value} interactive>
-      <Typography noWrap className={classes.secondaryList}>
+      <Typography noWrap className={classes.secondaryList} component="span">
         {value}
       </Typography>
     </Tooltip>

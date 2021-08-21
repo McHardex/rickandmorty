@@ -27,7 +27,6 @@ import ListItemWrapper from "Components/ListItemWrapper";
 const useStyles = makeStyles((theme) => ({
   horizontalCard: {
     display: "flex",
-    boxShadow: "0px 6px 12px rgb(255 255 255 / 30%)",
     alignItems: "flex-start",
   },
   expand: {
@@ -85,7 +84,12 @@ const LocationDetails: React.FC<Props> = ({ location }: Props) => {
       </Card>
 
       {/* details */}
-      <Collapse in={showLocationDetails} timeout="auto" unmountOnExit>
+      <Collapse
+        in={showLocationDetails}
+        timeout="auto"
+        unmountOnExit
+        data-testid="collapse"
+      >
         <CardContent>
           <ListItemWrapper primary="Location" secondary={location.name || "-"}>
             <PermIdentityIcon className={classes.icon} />

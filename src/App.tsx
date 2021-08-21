@@ -34,8 +34,9 @@ const useStyles = makeStyles((theme) => ({
     background: "#3b3e43",
   },
   media: {
-    height: 0,
-    paddingTop: "56.25%",
+    width: "300px",
+    height: "300px",
+    margin: "0 auto",
   },
 }));
 
@@ -94,11 +95,13 @@ const App = () => {
             characters.map((character) => (
               <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={character.id}>
                 <Card key={character.id}>
-                  <CardMedia
-                    className={classes.media}
-                    image={character.image}
-                    title={character.name}
-                  />
+                  <Box bgcolor="#3b3e43" padding="20px 20px 0 20px">
+                    <CardMedia
+                      className={classes.media}
+                      image={character.image}
+                      title={character.name}
+                    />
+                  </Box>
                   <CardContent className={classes.cardContent}>
                     <CharacterDetails character={character} />
                     <LocationDetails location={character.location} />
