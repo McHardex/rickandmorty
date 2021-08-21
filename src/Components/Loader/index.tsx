@@ -23,8 +23,12 @@ interface Props {
 const Loader: React.FC<Props> = ({ isLoading, message }: Props) => {
   const classes = useStyles();
   return (
-    <Backdrop className={classes.backdrop} open={isLoading}>
-      <CircularProgress color="secondary" />
+    <Backdrop
+      className={classes.backdrop}
+      open={isLoading}
+      data-testid="backDrop"
+    >
+      <CircularProgress color="secondary" data-testid="loader" />
       <Typography variant="h6">{message}</Typography>
     </Backdrop>
   );

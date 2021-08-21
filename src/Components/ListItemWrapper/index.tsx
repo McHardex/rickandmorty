@@ -35,11 +35,11 @@ const ListItemWrapper: React.FC<Props> = ({
   return (
     <ListItem>
       {avatar ? (
-        <ListItemAvatar>
+        <ListItemAvatar data-testid="show-avatar">
           <Avatar className={classes.avatar}>{children}</Avatar>
         </ListItemAvatar>
       ) : (
-        <ListItemAvatar>{children}</ListItemAvatar>
+        <ListItemAvatar data-testid="hide-avatar">{children}</ListItemAvatar>
       )}
       <ListItemText
         primary={primary}
