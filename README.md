@@ -3,6 +3,11 @@
 
 The Rick and Morty API is filled with canonical information as seen on the TV show. This project is a work to preview some Rick and Morty Characters.
 
+These includes: 
+- [x] Character Information
+- [x] Origin and Location information
+- [x] Name of the chapters the character is featured on ...
+
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
