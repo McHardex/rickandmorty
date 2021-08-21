@@ -27,7 +27,7 @@ const theme = createTheme({
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
-    width: "85%",
+    width: "95%",
     margin: "0 auto",
   },
   cardContent: {
@@ -93,7 +93,7 @@ const App = () => {
         <Grid container spacing={6} className={classes.gridContainer}>
           {characters.length > 0 &&
             characters.map((character) => (
-              <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={character.id}>
+              <Grid item xs={12} sm={6} md={6} lg={4} xl={3} key={character.id}>
                 <Card key={character.id}>
                   <Box bgcolor="#3b3e43" padding="20px 20px 0 20px">
                     <CardMedia
