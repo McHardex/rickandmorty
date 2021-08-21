@@ -24,7 +24,6 @@ import { Episode } from "Interfaces";
 const useStyles = makeStyles((theme) => ({
   horizontalCard: {
     display: "flex",
-    boxShadow: "0px 6px 12px rgb(255 255 255 / 30%)",
     alignItems: "flex-start",
   },
   expand: {
