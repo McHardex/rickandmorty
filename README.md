@@ -1,3 +1,4 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5755cc5f-9b2e-449f-9629-3ac10299e986/deploy-status)](https://app.netlify.com/sites/mch-rickandmorty/deploys)
 
 # Rick And Morty
 
