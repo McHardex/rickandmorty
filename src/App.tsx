@@ -8,8 +8,10 @@ import {
   makeStyles,
   Grid,
   Box,
+  Typography,
 } from "@material-ui/core";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { PaginationProps } from "@material-ui/lab/Pagination";
 
 import LocationDetails from "Components/LocationDetails";
 import ChaptersFeatured from "Components/ChaptersFeatured";
@@ -40,6 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const CHARACTER_LOAD_ERROR = "Unable to load characters.";
+
 const App = () => {
   const classes = useStyles();
 
@@ -52,27 +56,51 @@ const App = () => {
   });
   const [page, setPage] = useState<number>(1);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   useEffect(() => {
+    let isCurrentRequest = true;
     setIsLoading(true);
+    setLoadError(null);
+
     const getCharacterDetails = async (): Promise<void> => {
       try {
         const { info, characters } = await getUpdatedCharacterDetails(
           `${process.env.REACT_APP_RICK_AND_MORTY_URL}/character/?page=${page}`
         );
 
+        if (!isCurrentRequest) return;
+
         setInfo(info);
         setCharacters(characters);
         setIsLoading(false);
-      } catch (error) {
-        throw new Error(error);
+      } catch {
+        if (!isCurrentRequest) return;
+
+        setCharacters([]);
+        setLoadError(CHARACTER_LOAD_ERROR);
+        setIsLoading(false);
       }
     };
+
     getCharacterDetails();
+
+    return () => {
+      isCurrentRequest = false;
+    };
   }, [page]);
 
   const handlePageChange = (event: Object, page: number): void => {
     setPage(page);
+  };
+
+  const paginationProps: PaginationProps = {
+    color: "secondary",
+    count: info.pages,
+    hideNextButton: !info.next,
+    hidePrevButton: !info.prev,
+    page,
+    onChange: handlePageChange,
   };
 
   return (
@@ -80,15 +108,11 @@ const App = () => {
       <div className="App">
         <AppTopBar />
         <Loader isLoading={isLoading} message="The Rick And Morty Show" />
-        {!isLoading && (
-          <RMPagination
-            color="secondary"
-            count={info.pages}
-            hideNextButton={!!info.next}
-            hidePrevButton={!!info.prev}
-            page={page}
-            onChange={handlePageChange}
-          />
+        {!isLoading && <RMPagination {...paginationProps} />}
+        {loadError && !isLoading && (
+          <Box mt={4} textAlign="center">
+            <Typography color="error">{loadError}</Typography>
+          </Box>
         )}
         <Grid container spacing={6} className={classes.gridContainer}>
           {characters.length > 0 &&
@@ -113,16 +137,7 @@ const App = () => {
               </Grid>
             ))}
         </Grid>
-        {!isLoading && (
-          <RMPagination
-            color="secondary"
-            count={info.pages}
-            hideNextButton={!!info.next}
-            hidePrevButton={!!info.prev}
-            page={page}
-            onChange={handlePageChange}
-          />
-        )}
+        {!isLoading && <RMPagination {...paginationProps} />}
       </div>
     </ThemeProvider>
   );
