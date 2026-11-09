@@ -1,4 +1,5 @@
 import axios from "axios";
+import charactersInfo from "testUtils/charactersInfo";
 import getUpdatedCharacterDetails from "utils/getUpdatedCharacterDetails";
 
 jest.mock("axios");
@@ -6,12 +7,11 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 
 const characterPageUrl = "https://rickandmortyapi.com/api/character/?page=1";
 
-const pageInfo = {
-  count: 2,
-  pages: 2,
-  next: "https://rickandmortyapi.com/api/character/?page=2",
-  prev: null,
-};
+const pageInfo = charactersInfo(
+  "https://rickandmortyapi.com/api/character/?page=2",
+  null,
+  { count: 2, pages: 2 }
+);
 
 const earth = {
   id: 1,
